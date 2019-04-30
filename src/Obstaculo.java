@@ -39,6 +39,8 @@ public class Obstaculo {
      *
      * @param individuo
      * @return
+     *
+     *
      */
     public boolean hayInterseccion(Individuo individuo){
         //TODO
