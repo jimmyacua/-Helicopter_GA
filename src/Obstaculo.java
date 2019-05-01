@@ -4,7 +4,7 @@ import java.lang.Math;
  *
  * @author  Geovanny Cordero Valverde   (geovanny.corderovalverde@ucr.ac.cr)
  * @author  Carlos Delgado Rojas        (carlos.delgadorojas@ucr.ac.cr)
- * @author  Jimmy Acuña Díaz            (TODO agregar acá su email please)
+ * @author  Jimmy Acuña Díaz            (jimmy.acuna@ucr.ac.cr)
  */
 public class Obstaculo {
     /**
