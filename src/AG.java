@@ -144,7 +144,9 @@ public class AG {
      * Modifica el vector de individuos, creando la nueva generación.
      */
     public void seleccionar(){
-
+        //TODO
     }
+
+
 
 }
