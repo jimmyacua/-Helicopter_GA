@@ -23,22 +23,36 @@ public class Individuo {
     private int radio;
 
     /**
-     *  Constructor por default
+     *  Cantidad de obstáculos con los que colisiona
      */
-    public Individuo(){
-
-    }
+    private int colisiones;
 
     /**
      *  Constructor con parámetros
      * @param x coordenada en X del centro
      * @param y coordenada en Y del centro
-     * @param r longitud del radio
+     * @param radio longitud del radio
      */
-    public Individuo(int x, int y, int r){
+    public Individuo(int x, int y, int radio){
         this.x = x;
         this.y = y;
-        this.radio = r;
+        this.radio = radio;
+        this.colisiones = 0;
+    }
+
+    /**
+     * Retorna el total de obstaculos con los que colisiona el individuo
+     * @return el total de obstaculos con los que colisiona el individuo
+     */
+    public int getColisiones() {
+        return colisiones;
+    }
+
+    /**
+     * Permite incrementar en 1 unidad el número de colisiones de este individuo
+     */
+    public void incrementarColisiones(){
+        this.colisiones++;
     }
 
     /**
