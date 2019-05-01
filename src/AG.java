@@ -106,7 +106,7 @@ public class AG {
     public Individuo cruzar(Individuo individuo1, Individuo individuo2){
         Individuo individuo;
         // aleatorización de la herencia
-        int r = ((int) Math.random()* 10)%2;
+        int r = ((int)(Math.random()* 10))%2;
         if(0 == r){
             individuo = new Individuo(individuo1.getX(), individuo2.getY(), individuo1.getRadio());
         } else{
@@ -122,7 +122,7 @@ public class AG {
      */
     public Individuo mutar(Individuo individuo){
         Individuo mutante = individuo;
-        int random = ((int) Math.random()* 30)%3;
+        int random = ((int) (Math.random()* 30))%3;
         switch (random){
             case 0:
                 // muta coordenada x
