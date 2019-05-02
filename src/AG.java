@@ -1,4 +1,8 @@
+import jdk.internal.org.objectweb.asm.tree.InnerClassNode;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @brief Clase que permite crear un algoritmo genético para optimizar el
@@ -89,11 +93,21 @@ public class AG {
     public void generarPoblacionInicial(){
         for(int i = 0; i<poblacionInicial; i++){
             Individuo individuo = new Individuo(
-                    (int) (Math.random()%dimension),    // coordenada x
-                    (int) (Math.random()%dimension),    // coordenada y
-                    (int) (Math.random()%(dimension/2)) // radio siempre menor a la dim
+                    (int) (Math.random()*dimension) +1,    // coordenada x
+                    (int) (Math.random()*dimension)+1,    // coordenada y
+                    (int) (Math.random()*(dimension/2))+1 // radio siempre menor a la dim
             );
             generacionActual.add(individuo);
+        }
+
+        //crea obstaculos para probar seleccion()
+        int numObstaculos = poblacionInicial/2;
+        for(int i=0;i<numObstaculos; i++){
+            Obstaculo obstaculo = new Obstaculo(
+                    (int) (Math.random()*dimension) +1,    // coordenada x
+                    (int) (Math.random()*dimension)+1
+            );
+            obstaculos.add(obstaculo);
         }
     }
 
@@ -141,12 +155,38 @@ public class AG {
     }
 
     /**
+     * Ordena el arraylist de menor numero de colisiones a mayor numero de colisiones.
+     */
+    public static Comparator<Individuo> CompartorIndividuos = new Comparator<Individuo>() {
+        @Override
+        public int compare(Individuo i1, Individuo i2) {
+            int numColisiones1 = i1.getColisiones();
+            int numColisiones2 = i2.getColisiones();
+
+            return numColisiones1-numColisiones2;
+        }
+    };
+
+    /**
      * Modifica el vector de individuos, creando la nueva generación.
      */
-    public void seleccionar(){
-        //TODO
+    public ArrayList seleccionar(){
+        ArrayList<Individuo> mejoresIndividuos = new ArrayList<>();
+        double porcentajeBuenos = 100 - (proporcionCruzar + proporcionDebiles + proporcionMutar);
+        int cantidadBuenos = (int) ((poblacionInicial * porcentajeBuenos)/100);
+        int contador = 0;
+        while (contador < obstaculos.size()){
+            Obstaculo obstaculo = obstaculos.get(contador);
+            int contadorIndividuos = 0;
+            while (contadorIndividuos < generacionActual.size()) {
+                Individuo individuo = generacionActual.get(contadorIndividuos);
+                obstaculo.hayInterseccion(individuo);
+                contadorIndividuos++;
+            }
+            contador++;
+        }
+        Collections.sort(generacionActual, CompartorIndividuos);
+        System.out.println("d");
+        return mejoresIndividuos;
     }
-
-
-
 }
