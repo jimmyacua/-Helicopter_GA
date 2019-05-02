@@ -3,6 +3,7 @@ import jdk.internal.org.objectweb.asm.tree.InnerClassNode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * @brief Clase que permite crear un algoritmo genético para optimizar el
@@ -186,7 +187,57 @@ public class AG {
             contador++;
         }
         Collections.sort(generacionActual, CompartorIndividuos);
-        System.out.println("d");
+        //System.out.println("Seleccionando mejores individuos");
+        for(int i=0; i< cantidadBuenos; i++){
+            mejoresIndividuos.add(generacionActual.get(i));
+        }
         return mejoresIndividuos;
+    }
+
+    public void run(){
+        int numGeneracion = 0;
+        while (numGeneracion < cantidadGeneraciones){
+            generarPoblacionInicial();
+            int cantidadCruces = (int) ((poblacionInicial * proporcionCruzar)/100);
+            int cantidadMutaciones = (int) ((poblacionInicial * proporcionMutar)/100);
+            int cantidadChapas = (int) ((poblacionInicial * proporcionDebiles)/100);
+            ArrayList<Individuo> mejores = seleccionar();
+            int ind = 0;
+            while (ind < mejores.size()) {
+                generacionNueva.add(mejores.get(ind));
+                ind++;
+            }
+            ind = 0;
+            while (ind < cantidadCruces){
+                Individuo cruce = cruzar(generacionActual.get((int)(Math.random()*generacionActual.size())), generacionActual.get((int)(Math.random()*generacionActual.size())));
+                generacionNueva.add(cruce);
+                ind++;
+            }
+            ind = 0;
+            while (ind < cantidadMutaciones){
+                Individuo mutante = mutar(generacionActual.get((int)(Math.random()*generacionActual.size())));
+                generacionNueva.add(mutante);
+                ind++;
+            }
+            Collections.sort(generacionActual, CompartorIndividuos);//ordena la lista
+            while (cantidadChapas <= 0){
+                generacionNueva.add(generacionActual.get(generacionActual.size()-cantidadChapas));
+                cantidadChapas--;
+            }
+
+            numGeneracion++;
+            generacionActual.clear();
+            for(int i = 0; i<generacionNueva.size(); i++){
+                generacionActual.add(generacionNueva.get(i));
+            }
+            generacionNueva.clear();
+        }
+
+        Collections.sort(generacionActual, CompartorIndividuos);
+        for(int i=0; i<generacionActual.size(); i++){
+            System.out.println("X= " + generacionActual.get(i).getX() + ", Y= " + generacionActual.get(i).getY()
+            + ", R= " + generacionActual.get(i).getRadio() + ", colisiones: " + generacionActual.get(i).getColisiones());
+        }
+
     }
 }
