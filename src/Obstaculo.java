@@ -1,4 +1,8 @@
+import javafx.util.Pair;
+
 import java.lang.Math;
+import java.util.ArrayList;
+
 /**
  * @brief Clase que permite representar un Obstáculo en el contexto del algoritmo genético.
  *
@@ -27,18 +31,20 @@ public class Obstaculo {
      */
     private double largo;
 
+    private ArrayList<Pair> puntos;
+
     /**
      *  Constructor por defecto
      * @param x coordena en eje x de la esquina inferior izquierda
      * @param y coordena en eje y de la esquina inferior izquierda
-     * @param ancho ancho del rectangulo
-     * @param largo largo del rectangulo
      */
-    public Obstaculo(int x, int y, double ancho, double largo){
+    public Obstaculo(int x, int y/*, double ancho, double largo*/){
         this.x = x;
         this.y = y;
-        this.ancho = ancho;
-        this.largo = largo;
+
+        //para entrega del 02/mayo suponer que los obstaculos son puntos.
+        //this.ancho = ancho;
+        //this.largo = largo;
     }
 
     /**
@@ -47,7 +53,29 @@ public class Obstaculo {
      * @return true si hay colisión, false en caso contrario
      */
     public boolean hayInterseccion(Individuo individuo){
-        double puntox = this.x;
+
+        if(individuo.getX()==this.x){
+            if(y <= individuo.getX()+individuo.getRadio() || y >= individuo.getX()+individuo.getRadio()){
+                individuo.incrementarColisiones();
+                return true;
+            }
+        } else if(individuo.getY()==this.y){
+            if(x <= individuo.getY()+individuo.getRadio() || x >= individuo.getY()+individuo.getRadio()){
+                individuo.incrementarColisiones();
+                return true;
+            }
+        } else {
+            int cateto = x-individuo.getX();
+            int cateto2 = y-individuo.getY();
+            int hipot = (int) (Math.pow(cateto,2) + Math.pow(cateto2,2));
+            if(hipot<=individuo.getRadio()){
+                individuo.incrementarColisiones();
+                return true;
+            }
+        }
+        return false;
+
+        /*double puntox = this.x;
         double puntoy = this.y;
         boolean intersecado = false;
 
@@ -78,7 +106,7 @@ public class Obstaculo {
             individuo.incrementarColisiones();
             return true;
         }
-        return false;
+        return false;*/
     }
 
     private boolean buscarInterseccionEjeX(Individuo individuo, double puntox , double puntoy){
@@ -89,7 +117,7 @@ public class Obstaculo {
             ) <= individuo.getRadio()){
                 return true;
             } else{
-                puntox += 0.01; //.01 es una medida arbitraria de desplazamiento
+                puntox += 5; //.01 es una medida arbitraria de desplazamiento
             }
         }
         return false;
@@ -103,7 +131,7 @@ public class Obstaculo {
             ) <= individuo.getRadio()){
                 return true;
             } else{
-                puntoy += 0.01; //.01 es una medida arbitraria de desplazamiento
+                puntoy += 5; //.01 es una medida arbitraria de desplazamiento
             }
         }
         return false;
